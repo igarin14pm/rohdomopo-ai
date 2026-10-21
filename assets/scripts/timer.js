@@ -1,3 +1,5 @@
+import {initializeAudio, playSound} from "./audio.js";
+
 /**
  * 作業フェーズと休憩フェーズの定義。
  *
@@ -96,6 +98,13 @@ let timerFrameId = null;
 let timerState = "idle";
 
 /**
+ * 前回描画時の残り秒数。
+ *
+ * @type {?number}
+ */
+let previousRemainingSeconds = null;
+
+/**
  * 残り時間をタイマー表示用のMM:SS.hh形式に変換します。
  *
  * @param {number} remainingMs 残り時間（ミリ秒）。
@@ -139,6 +148,13 @@ function renderPhase() {
 }
 
 /**
+ * フェーズに対応する音声を再生します。
+ */
+function playPhaseSound() {
+  playSound(currentPhase === "work" ? "hell" : "heaven");
+}
+
+/**
  * 作業フェーズまたは休憩フェーズへ移行します。
  *
  * @param {"work"|"rest"} phaseName 移行先のフェーズ。
@@ -151,6 +167,8 @@ function enterPhase(phaseName) {
   renderPhase();
   timerButtonLabel.textContent = "カウントダウンを一時停止";
   timerButton.setAttribute("aria-pressed", "true");
+  previousRemainingSeconds = null;
+  playPhaseSound();
   renderTimer();
 }
 
@@ -161,6 +179,7 @@ function renderTimer() {
   const phase = PHASES[currentPhase];
   const elapsedMs = Math.min(getElapsedTimeMs(), phase.durationMs);
   const remainingMs = phase.durationMs - elapsedMs;
+  const remainingSeconds = Math.ceil(remainingMs / 1000);
 
   timerDisplay.textContent = formatRemainingTime(remainingMs);
   timerDisplay.setAttribute("aria-label", `残り時間 ${formatRemainingTime(remainingMs)}`);
@@ -168,6 +187,14 @@ function renderTimer() {
   if (timerState !== "running") {
     return;
   }
+
+  if (
+    previousRemainingSeconds !== null
+    && remainingSeconds < previousRemainingSeconds
+  ) {
+    playSound("count");
+  }
+  previousRemainingSeconds = remainingSeconds;
 
   if (remainingMs <= 0) {
     enterPhase(currentPhase === "work" ? "rest" : "work");
@@ -180,12 +207,18 @@ function renderTimer() {
 /**
  * 現在のフェーズのタイマーを開始または再開します。
  */
-function startTimer() {
+async function startTimer() {
+  const isInitialStart = timerState === "idle";
+
+  await initializeAudio();
   startedAtMs = Date.now();
   timerState = "running";
   renderPhase();
   timerButtonLabel.textContent = "カウントダウンを一時停止";
   timerButton.setAttribute("aria-pressed", "true");
+  if (isInitialStart) {
+    playPhaseSound();
+  }
   renderTimer();
 }
 
@@ -196,6 +229,7 @@ function pauseTimer() {
   elapsedBeforePauseMs = Math.min(getElapsedTimeMs(), PHASES[currentPhase].durationMs);
   startedAtMs = null;
   timerState = "paused";
+  previousRemainingSeconds = null;
   timerButtonLabel.textContent = "カウントダウンを再開";
   timerButton.setAttribute("aria-pressed", "false");
 
@@ -212,7 +246,7 @@ function pauseTimer() {
  */
 function handleTimerButtonClick() {
   if (timerState === "idle" || timerState === "paused") {
-    startTimer();
+    void startTimer();
     return;
   }
 
