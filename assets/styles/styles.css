@@ -1,0 +1,347 @@
+:root {
+  color-scheme: light;
+  --background: #f1f4e9;
+  --background-gradient: #f8f9f1;
+  --text-primary: #20382b;
+  --text-secondary: #637463;
+  --accent: #42734f;
+  --accent-dark: #2c583a;
+  --outline: rgba(66, 115, 79, 0.34);
+  --rule: rgba(56, 91, 62, 0.25);
+  --shadow: rgba(39, 71, 45, 0.13);
+  --button-text: #fff;
+  --page-rule: rgba(56, 91, 62, 0.25);
+  transition: color-scheme 1s ease;
+}
+
+:root.is-working {
+  color-scheme: dark;
+  --background: #261713;
+  --background-gradient: #3a211b;
+  --text-primary: #f6e5d8;
+  --text-secondary: #e0b9a6;
+  --accent: #d97b58;
+  --accent-dark: #f0a078;
+  --outline: rgba(255, 190, 161, 0.72);
+  --rule: rgba(243, 190, 164, 0.42);
+  --shadow: rgba(8, 3, 2, 0.42);
+  --button-text: #261713;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 8%, rgba(255, 255, 255, 0.78), transparent 28rem),
+    linear-gradient(125deg, var(--background) 0%, var(--background-gradient) 100%);
+  color: var(--text-primary);
+  font-family: "Noto Serif JP", "Noto Serif", "Hiragino Mincho ProN",
+    "Yu Mincho", Georgia, serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  transition: background 1s ease, color 1s ease;
+}
+
+button {
+  font: inherit;
+}
+
+.timer-page {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  position: relative;
+  padding: clamp(1.75rem, 5vw, 4.5rem) clamp(1.5rem, 7vw, 8rem)
+    clamp(1.5rem, 4vw, 3.5rem);
+  isolation: isolate;
+}
+
+.timer-page::before,
+.timer-page::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  transition: background-color 1s ease;
+}
+
+.timer-page::before {
+  top: 0;
+  right: clamp(1.25rem, 4vw, 4rem);
+  bottom: 0;
+  width: 1px;
+  background: var(--rule);
+}
+
+.timer-page::after {
+  top: clamp(1.25rem, 4vw, 3.5rem);
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--rule);
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  max-width: 37rem;
+}
+
+.brand-mark {
+  display: grid;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-family: "Noto Serif", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  font-size: 1.2rem;
+  place-items: center;
+}
+
+.header-copy {
+  padding-top: 0.15rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.9rem;
+  color: var(--accent);
+  font-family: "Noto Serif", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.75;
+}
+
+.timer-panel {
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 68rem);
+  padding: clamp(2.5rem, 7vh, 5rem) clamp(0.5rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: clamp(1.75rem, 4vh, 3rem);
+}
+
+.section-label-line {
+  width: clamp(2rem, 7vw, 5rem);
+  height: 1px;
+  background: var(--rule);
+}
+
+.timer-status {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  transition: color 1s ease;
+}
+
+.timer-message {
+  margin: -1.5rem 0 clamp(1.75rem, 4vh, 3rem);
+  color: var(--text-secondary);
+  font-size: clamp(0.78rem, 1.2vw, 0.9rem);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  transition: color 1s ease;
+}
+
+.timer-display {
+  margin: 0;
+  color: var(--accent-dark);
+  font-family: "Noto Serif", "Noto Serif JP", "Hiragino Mincho ProN",
+    "Yu Mincho", Georgia, serif;
+  font-size: clamp(4rem, 16vw, 13.5rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+  white-space: nowrap;
+  transition: color 1s ease;
+}
+
+.timer-caption {
+  margin: clamp(1.5rem, 3vh, 2.25rem) 0 0;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+}
+
+.timer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: clamp(2.25rem, 6vh, 4rem);
+  min-width: min(100%, 18rem);
+  padding: 0.95rem 1.35rem 0.95rem 1.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: var(--accent);
+  box-shadow: 0 0.8rem 1.5rem var(--shadow);
+  color: var(--button-text);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  transition: background-color 1s ease, box-shadow 160ms ease, color 1s ease,
+    transform 160ms ease;
+}
+
+.button-arrow {
+  font-family: Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 160ms ease;
+}
+
+.timer-button:hover {
+  background: var(--accent-dark);
+  box-shadow: 0 1rem 2rem var(--shadow);
+  transform: translateY(-2px);
+}
+
+.timer-button:hover .button-arrow {
+  transform: translateX(0.25rem);
+}
+
+.timer-button:focus-visible {
+  outline: 3px solid var(--outline);
+  outline-offset: 4px;
+}
+
+.timer-button:active {
+  box-shadow: 0 0.5rem 1rem var(--shadow);
+  transform: translateY(0);
+}
+
+.page-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  transition: color 1s ease;
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+.page-footer span {
+  color: var(--accent);
+  font-family: "Noto Serif", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.page-footer i {
+  padding: 0 0.6rem;
+  color: var(--rule);
+  font-style: normal;
+}
+
+.footer-note {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 38rem) {
+  .timer-page {
+    padding: 1.75rem 1.25rem 1.5rem;
+  }
+
+  .timer-page::before {
+    right: 1.25rem;
+  }
+
+  .timer-page::after {
+    top: 1.25rem;
+  }
+
+  .page-header {
+    gap: 0.85rem;
+  }
+
+  .brand-mark {
+    width: 2.15rem;
+    height: 2.15rem;
+    font-size: 1rem;
+  }
+
+  h1 {
+    letter-spacing: 0.06em;
+  }
+
+  .timer-panel {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .timer-display {
+    font-size: clamp(3.45rem, 15.5vw, 7rem);
+    letter-spacing: -0.08em;
+  }
+
+  .timer-status {
+    letter-spacing: 0.06em;
+  }
+
+  .timer-caption {
+    letter-spacing: 0.06em;
+  }
+
+  .timer-message {
+    margin-top: -1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .page-footer {
+    display: block;
+    line-height: 2;
+  }
+
+  .footer-note {
+    margin-top: 0.35rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer-button,
+  .button-arrow,
+  body,
+  .timer-page::before,
+  .timer-page::after,
+  .timer-status,
+  .timer-message,
+  .timer-display,
+  .page-footer {
+    transition: none;
+  }
+}

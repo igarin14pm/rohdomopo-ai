@@ -61,11 +61,11 @@ JSDoc によるドキュメンテーションコメントを必ず記載して�
 例:
 ```javascript
 /**
- * 与えられた引数を二乗して返します
- * 
- * @param {number} n 二乗したい数
- * @returns {numbr} 二乗された数
- * /
+ * 与えられた引数を二乗して返します。
+ *
+ * @param {number} n 二乗したい数。
+ * @returns {number} 二乗された数。
+ */
 function square(n) {
   return n ** 2;
 }
