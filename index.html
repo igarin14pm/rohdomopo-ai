@@ -60,6 +60,17 @@
         <p class="copyright">&copy; 2026 Igarin</p>
       </footer>
     </main>
+    <dialog class="audio-warning-dialog" id="audio-warning-dialog" aria-labelledby="audio-warning-title">
+      <div class="audio-warning-content">
+        <p class="audio-warning-icon" aria-hidden="true">🔊</p>
+        <h2 id="audio-warning-title">このWebアプリでは音声が流れます</h2>
+        <p>歓喜と絶望を音でお知らせします</p>
+        <form method="dialog">
+          <button class="audio-warning-close" type="submit">閉じる</button>
+        </form>
+      </div>
+    </dialog>
     <script type="module" src="assets/scripts/timer.js"></script>
+    <script type="module" src="assets/scripts/dialog.js"></script>
   </body>
 </html>
