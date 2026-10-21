@@ -1,15 +1,78 @@
+/**
+ * 作業時間（ミリ秒）。
+ *
+ * @type {number}
+ */
 const WORK_DURATION_MS = 5 * 60 * 1000;
+
+/**
+ * タイマーを再描画する間隔（ミリ秒）。
+ *
+ * @type {number}
+ */
 const RENDER_INTERVAL_MS = 50;
 
+/**
+ * タイマー状態を表示する要素。
+ *
+ * @type {HTMLElement}
+ */
 const timerStatus = document.querySelector("#timer-status");
+
+/**
+ * 作業モードのメッセージを表示する要素。
+ *
+ * @type {HTMLElement}
+ */
 const timerMessage = document.querySelector("#timer-message");
+
+/**
+ * 残り時間を表示する要素。
+ *
+ * @type {HTMLElement}
+ */
 const timerDisplay = document.querySelector("#timer-display");
+
+/**
+ * タイマーの開始・停止ボタン。
+ *
+ * @type {HTMLButtonElement}
+ */
 const timerButton = document.querySelector("#timer-toggle");
+
+/**
+ * タイマーボタン内のラベル要素。
+ *
+ * @type {HTMLElement}
+ */
 const timerButtonLabel = timerButton.querySelector("span:first-child");
 
+/**
+ * 一時停止前に経過していた作業時間（ミリ秒）。
+ *
+ * @type {number}
+ */
 let elapsedBeforePauseMs = 0;
+
+/**
+ * 現在の計測を開始した時刻（ミリ秒）。
+ *
+ * @type {?number}
+ */
 let startedAtMs = null;
+
+/**
+ * 次回のタイマー再描画に割り当てられた識別子。
+ *
+ * @type {?number}
+ */
 let timerFrameId = null;
+
+/**
+ * タイマーの状態。
+ *
+ * @type {string}
+ */
 let timerState = "idle";
 
 /**
