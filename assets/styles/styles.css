@@ -28,6 +28,20 @@
   --button-text: #261713;
 }
 
+:root.is-resting {
+  color-scheme: light;
+  --background: #dceff7;
+  --background-gradient: #f5fbfd;
+  --text-primary: #183b4b;
+  --text-secondary: #416b7d;
+  --accent: #236b86;
+  --accent-dark: #164d64;
+  --outline: rgba(35, 107, 134, 0.42);
+  --rule: rgba(35, 107, 134, 0.28);
+  --shadow: rgba(31, 91, 113, 0.16);
+  --button-text: #fff;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -247,6 +261,24 @@ h1 {
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   transition: color 1s ease;
+}
+
+:root,
+body,
+.timer-page::before,
+.timer-page::after,
+.brand-mark,
+.eyebrow,
+.timer-status,
+.timer-message,
+.timer-display,
+.timer-caption,
+.timer-button,
+.page-footer,
+.page-footer span {
+  transition-property: background-color, background, border-color, color, box-shadow;
+  transition-duration: 1s;
+  transition-timing-function: ease;
 }
 
 .page-footer p {

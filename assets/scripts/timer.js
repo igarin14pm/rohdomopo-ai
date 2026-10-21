@@ -1,9 +1,22 @@
 /**
- * 作業時間（ミリ秒）。
+ * 作業フェーズと休憩フェーズの定義。
  *
- * @type {number}
+ * @type {Object<string, {durationMs: number, status: string, message: string, theme: string}>}
  */
-const WORK_DURATION_MS = 5 * 60 * 1000;
+const PHASES = {
+  work: {
+    durationMs: 5 * 60 * 1000,
+    status: "五分間の徒労 〜 人間性の剥奪",
+    message: "問うな。理由を求める時間は終わった。ただキーボードを叩け。",
+    theme: "working",
+  },
+  rest: {
+    durationMs: 25 * 60 * 1000,
+    status: "二十五分間の解放 〜 人間性の奪還",
+    message: "見上げよ。世界は彩りに満ちている。思考の翼を広げ、どこへでも飛んでゆけ。",
+    theme: "resting",
+  },
+};
 
 /**
  * タイマーを再描画する間隔（ミリ秒）。
@@ -20,7 +33,7 @@ const RENDER_INTERVAL_MS = 50;
 const timerStatus = document.querySelector("#timer-status");
 
 /**
- * 作業モードのメッセージを表示する要素。
+ * フェーズのメッセージを表示する要素。
  *
  * @type {HTMLElement}
  */
@@ -48,7 +61,14 @@ const timerButton = document.querySelector("#timer-toggle");
 const timerButtonLabel = timerButton.querySelector("span:first-child");
 
 /**
- * 一時停止前に経過していた作業時間（ミリ秒）。
+ * 現在のフェーズ。
+ *
+ * @type {"work"|"rest"}
+ */
+let currentPhase = "work";
+
+/**
+ * 一時停止前に経過していたフェーズ時間（ミリ秒）。
  *
  * @type {number}
  */
@@ -71,12 +91,12 @@ let timerFrameId = null;
 /**
  * タイマーの状態。
  *
- * @type {string}
+ * @type {"idle"|"running"|"paused"}
  */
 let timerState = "idle";
 
 /**
- * 残り時間をタイマー表示用の MM:SS.hh 形式に変換します。
+ * 残り時間をタイマー表示用のMM:SS.hh形式に変換します。
  *
  * @param {number} remainingMs 残り時間（ミリ秒）。
  * @returns {string} 形式化された残り時間。
@@ -91,9 +111,9 @@ function formatRemainingTime(remainingMs) {
 }
 
 /**
- * 描画頻度ではなく壁時計を使って、経過した作業時間を返します。
+ * 描画頻度ではなく壁時計を使って、現在のフェーズの経過時間を返します。
  *
- * @returns {number} 経過した作業時間（ミリ秒）。
+ * @returns {number} 経過時間（ミリ秒）。
  */
 function getElapsedTimeMs() {
   if (timerState !== "running" || startedAtMs === null) {
@@ -104,57 +124,76 @@ function getElapsedTimeMs() {
 }
 
 /**
- * 残り時間を更新し、次の描画更新を予約します。
+ * 現在のフェーズに合わせて表示文言とテーマを更新します。
  */
-function renderTimer() {
-  const elapsedMs = Math.min(getElapsedTimeMs(), WORK_DURATION_MS);
-  const remainingMs = WORK_DURATION_MS - elapsedMs;
+function renderPhase() {
+  const phase = PHASES[currentPhase];
 
-  timerDisplay.textContent = formatRemainingTime(remainingMs);
-  timerDisplay.setAttribute("aria-label", `残り時間 ${formatRemainingTime(remainingMs)}`);
-
-  if (timerState === "running" && remainingMs > 0) {
-    timerFrameId = window.setTimeout(renderTimer, RENDER_INTERVAL_MS);
-    return;
-  }
-
-  if (timerState === "running") {
-    timerState = "completed";
-    elapsedBeforePauseMs = WORK_DURATION_MS;
-    startedAtMs = null;
-    timerButtonLabel.textContent = "作業時間終了";
-    timerButton.disabled = true;
-    timerButton.setAttribute("aria-disabled", "true");
-  }
-}
-
-/**
- * ページを作業モードのメッセージと配色に切り替えます。
- */
-function enterWorkMode() {
-  document.body.classList.add("is-working");
-  document.documentElement.classList.add("is-working");
-  timerStatus.textContent = "五分間の徒労 〜 人間性の剥奪";
+  document.body.classList.remove("is-working", "is-resting");
+  document.documentElement.classList.remove("is-working", "is-resting");
+  document.body.classList.add(`is-${phase.theme}`);
+  document.documentElement.classList.add(`is-${phase.theme}`);
+  timerStatus.textContent = phase.status;
+  timerMessage.textContent = phase.message;
   timerMessage.hidden = false;
 }
 
 /**
- * 作業タイマーを開始または再開します。
+ * 作業フェーズまたは休憩フェーズへ移行します。
+ *
+ * @param {"work"|"rest"} phaseName 移行先のフェーズ。
  */
-function startTimer() {
-  enterWorkMode();
+function enterPhase(phaseName) {
+  currentPhase = phaseName;
+  elapsedBeforePauseMs = 0;
   startedAtMs = Date.now();
   timerState = "running";
+  renderPhase();
   timerButtonLabel.textContent = "カウントダウンを一時停止";
   timerButton.setAttribute("aria-pressed", "true");
   renderTimer();
 }
 
 /**
- * 作業テーマを変えずにタイマーを一時停止します。
+ * 残り時間を更新し、必要なら次のフェーズを開始します。
+ */
+function renderTimer() {
+  const phase = PHASES[currentPhase];
+  const elapsedMs = Math.min(getElapsedTimeMs(), phase.durationMs);
+  const remainingMs = phase.durationMs - elapsedMs;
+
+  timerDisplay.textContent = formatRemainingTime(remainingMs);
+  timerDisplay.setAttribute("aria-label", `残り時間 ${formatRemainingTime(remainingMs)}`);
+
+  if (timerState !== "running") {
+    return;
+  }
+
+  if (remainingMs <= 0) {
+    enterPhase(currentPhase === "work" ? "rest" : "work");
+    return;
+  }
+
+  timerFrameId = window.setTimeout(renderTimer, RENDER_INTERVAL_MS);
+}
+
+/**
+ * 現在のフェーズのタイマーを開始または再開します。
+ */
+function startTimer() {
+  startedAtMs = Date.now();
+  timerState = "running";
+  renderPhase();
+  timerButtonLabel.textContent = "カウントダウンを一時停止";
+  timerButton.setAttribute("aria-pressed", "true");
+  renderTimer();
+}
+
+/**
+ * 現在のフェーズを一時停止し、テーマと表示を保持します。
  */
 function pauseTimer() {
-  elapsedBeforePauseMs = Math.min(getElapsedTimeMs(), WORK_DURATION_MS);
+  elapsedBeforePauseMs = Math.min(getElapsedTimeMs(), PHASES[currentPhase].durationMs);
   startedAtMs = null;
   timerState = "paused";
   timerButtonLabel.textContent = "カウントダウンを再開";
@@ -169,7 +208,7 @@ function pauseTimer() {
 }
 
 /**
- * 開始、停止、再開ボタンの操作を処理します。
+ * 開始、一時停止、再開ボタンの操作を処理します。
  */
 function handleTimerButtonClick() {
   if (timerState === "idle" || timerState === "paused") {
@@ -177,9 +216,7 @@ function handleTimerButtonClick() {
     return;
   }
 
-  if (timerState === "running") {
-    pauseTimer();
-  }
+  pauseTimer();
 }
 
 timerButton.addEventListener("click", handleTimerButtonClick);
