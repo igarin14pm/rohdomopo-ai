@@ -253,6 +253,54 @@ h1 {
   transform: translateY(0);
 }
 
+.worldview {
+  position: relative;
+  width: min(100%, 48rem);
+  margin: clamp(4rem, 10vh, 7rem) auto 0;
+  padding-top: clamp(1.75rem, 4vh, 2.75rem);
+  border-top: 1px solid var(--rule);
+  text-align: left;
+}
+
+.worldview::before {
+  position: absolute;
+  top: -0.15em;
+  left: 0;
+  color: var(--accent);
+  content: "“";
+  font-family: Georgia, serif;
+  font-size: 3rem;
+  line-height: 1;
+  transition: color 1s ease;
+}
+
+.worldview h2 {
+  margin: 0 0 1.25rem;
+  padding-left: 2.25rem;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  transition: color 1s ease;
+}
+
+.worldview-copy {
+  color: var(--text-secondary);
+  font-size: clamp(0.82rem, 1.25vw, 0.92rem);
+  letter-spacing: 0.04em;
+  line-height: 2.15;
+  transition: color 1s ease;
+}
+
+.worldview-copy p {
+  margin: 0;
+}
+
+.worldview-copy p + p {
+  margin-top: 1.25rem;
+}
+
 .page-footer {
   display: flex;
   align-items: baseline;
@@ -274,6 +322,7 @@ body,
 .timer-display,
 .timer-caption,
 .timer-button,
+.worldview,
 .page-footer,
 .page-footer span {
   transition-property: background-color, background, border-color, color, box-shadow;
@@ -352,6 +401,21 @@ body,
   .timer-message {
     margin-top: -1rem;
     letter-spacing: 0.04em;
+  }
+
+  .worldview {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .worldview-copy {
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    line-height: 2;
+  }
+
+  .worldview-copy p + p {
+    margin-top: 1rem;
   }
 
   .page-footer {
