@@ -358,6 +358,7 @@ h1 {
 .page-footer {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   justify-content: space-between;
   color: var(--text-secondary);
   font-size: 0.72rem;
@@ -405,6 +406,12 @@ body,
 .footer-note {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
+}
+
+.copyright {
+  flex-basis: 100%;
+  margin-top: 0.55rem !important;
+  text-align: right;
 }
 
 @media (max-width: 38rem) {
@@ -489,6 +496,11 @@ body,
 
   .footer-note {
     margin-top: 0.35rem !important;
+  }
+
+  .copyright {
+    margin-top: 0.35rem !important;
+    text-align: left;
   }
 }
 
