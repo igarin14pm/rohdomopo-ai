@@ -22,7 +22,7 @@ React、Vue、Tailwind CSS、jQuery などは一切使用しないでくださ�
 
 CDN 経由のスクリプトの読み込み、外部アイコンライブラリなどは一切使用せず、ネイティブの機能 (HTML/CSS/JS) のみで実装してください。
 
-**例外**: 日本語フォントの Noto Sans Japanese (https://fonts.google.com/noto/specimen/Noto+Sans+JP?query=noto+sans)、 英字フォントの Noto Sans (https://fonts.google.com/noto/specimen/Noto+Sans) を Web フォントとして使用することを許可します。
+**例外**: 日本語フォントの Noto Serif Japanese (https://fonts.google.com/noto/specimen/Noto+Serif+JP) 、 英字フォントの Noto Serif (https://fonts.google.com/noto/specimen/Noto+Serif?query=noto+serif) を Web フォントとして使用することを許可します。
 
 ## ファイル構成の指針
 
