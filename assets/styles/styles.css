@@ -269,6 +269,21 @@ h1 {
   transition: color 1s ease;
 }
 
+@keyframes timer-final-minute-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.timer-display.is-final-minute {
+  animation: timer-final-minute-blink 2s ease-in-out infinite;
+}
+
 .timer-caption {
   margin: clamp(1.5rem, 3vh, 2.25rem) 0 0;
   color: var(--text-secondary);
@@ -592,5 +607,9 @@ body,
   .timer-display,
   .page-footer {
     transition: none;
+  }
+
+  .timer-display.is-final-minute {
+    animation: none;
   }
 }

@@ -28,6 +28,13 @@ const PHASES = {
 const RENDER_INTERVAL_MS = 50;
 
 /**
+ * 明滅を開始する残り時間の上限（ミリ秒）。
+ *
+ * @type {number}
+ */
+const FINAL_MINUTE_THRESHOLD_MS = 60 * 1000;
+
+/**
  * タイマー状態を表示する要素。
  *
  * @type {HTMLElement}
@@ -183,6 +190,10 @@ function renderTimer() {
 
   timerDisplay.textContent = formatRemainingTime(remainingMs);
   timerDisplay.setAttribute("aria-label", `残り時間 ${formatRemainingTime(remainingMs)}`);
+  timerDisplay.classList.toggle(
+    "is-final-minute",
+    remainingMs <= FINAL_MINUTE_THRESHOLD_MS,
+  );
 
   if (timerState !== "running") {
     return;
