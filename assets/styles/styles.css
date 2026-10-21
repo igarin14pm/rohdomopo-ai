@@ -301,6 +301,40 @@ h1 {
   margin-top: 1.25rem;
 }
 
+.product-summary {
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  border-top: 1px solid var(--rule);
+  color: var(--text-secondary);
+  font-size: clamp(0.82rem, 1.25vw, 0.92rem);
+  letter-spacing: 0.04em;
+  line-height: 2.15;
+}
+
+.product-summary summary {
+  padding: 1rem 0;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 1s ease;
+}
+
+.product-summary summary:focus-visible {
+  outline: 3px solid var(--outline);
+  outline-offset: 4px;
+}
+
+.product-summary-copy {
+  padding: 0 0 1rem;
+}
+
+.product-summary-copy p {
+  margin: 0;
+}
+
+.product-summary-copy p + p {
+  margin-top: 1.25rem;
+}
+
 .page-footer {
   display: flex;
   align-items: baseline;
@@ -415,6 +449,16 @@ body,
   }
 
   .worldview-copy p + p {
+    margin-top: 1rem;
+  }
+
+  .product-summary {
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    line-height: 2;
+  }
+
+  .product-summary-copy p + p {
     margin-top: 1rem;
   }
 
