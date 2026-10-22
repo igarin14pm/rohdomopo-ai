@@ -21,6 +21,17 @@ const PHASES = {
 };
 
 /**
+ * 指定された時間がタイマーに利用できる値か検証します。
+ *
+ * @param {number} durationMs 検証する時間（ミリ秒）。
+ */
+function validateTimerDuration(durationMs) {
+  if (!Number.isFinite(durationMs) || durationMs <= 0) {
+    throw new TypeError("タイマー時間は正の有限数で指定してください。");
+  }
+}
+
+/**
  * 明滅を開始する残り時間の上限（ミリ秒）。
  *
  * @type {number}
@@ -173,6 +184,28 @@ function enterPhase(phaseName) {
 }
 
 /**
+ * 指定されたフェーズへ切り替え、タイマーを停止状態にします。
+ *
+ * @param {"work"|"rest"} phaseName 切り替え先のフェーズ。
+ */
+function switchToStoppedPhase(phaseName) {
+  if (timerFrameId !== null) {
+    window.cancelAnimationFrame(timerFrameId);
+    timerFrameId = null;
+  }
+
+  currentPhase = phaseName;
+  elapsedBeforePauseMs = 0;
+  startedAtMs = null;
+  timerState = "idle";
+  previousRemainingSeconds = null;
+  renderPhase();
+  timerButtonLabel.textContent = "カウントダウンを開始";
+  timerButton.setAttribute("aria-pressed", "false");
+  renderTimer();
+}
+
+/**
  * 残り時間を更新し、必要なら次のフェーズを開始します。
  */
 function renderTimer() {
@@ -257,4 +290,59 @@ function handleTimerButtonClick() {
   pauseTimer();
 }
 
+/**
+ * 5分間の作業状態へ切り替え、タイマーを停止状態にします。
+ */
+function switchStateToHell() {
+  switchToStoppedPhase("work");
+}
+
+/**
+ * 25分間の休憩状態へ切り替え、タイマーを停止状態にします。
+ */
+function switchStateToHeaven() {
+  switchToStoppedPhase("rest");
+}
+
+/**
+ * 5分間の作業状態のタイマー時間を設定します。
+ *
+ * @param {number} durationMs タイマー時間（ミリ秒）。
+ */
+function setHellTimerDuration(durationMs) {
+  validateTimerDuration(durationMs);
+  PHASES.work.durationMs = durationMs;
+
+  if (currentPhase === "work") {
+    if (timerFrameId !== null) {
+      window.cancelAnimationFrame(timerFrameId);
+      timerFrameId = null;
+    }
+    renderTimer();
+  }
+}
+
+/**
+ * 25分間の休憩状態のタイマー時間を設定します。
+ *
+ * @param {number} durationMs タイマー時間（ミリ秒）。
+ */
+function setHeavenTimerDuration(durationMs) {
+  validateTimerDuration(durationMs);
+  PHASES.rest.durationMs = durationMs;
+
+  if (currentPhase === "rest") {
+    if (timerFrameId !== null) {
+      window.cancelAnimationFrame(timerFrameId);
+      timerFrameId = null;
+    }
+    renderTimer();
+  }
+}
+
 timerButton.addEventListener("click", handleTimerButtonClick);
+
+window.switchStateToHell = switchStateToHell;
+window.switchStateToHeaven = switchStateToHeaven;
+window.setHellTimerDuration = setHellTimerDuration;
+window.setHeavenTimerDuration = setHeavenTimerDuration;
