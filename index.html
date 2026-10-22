@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f1f4e9">
+    <title>ロードモポ - 無意味な徒労から人類を解放するカウントダウン</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Serif:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles/styles.css">
+  </head>
+  <body>
+    <main class="timer-page">
+      <header class="page-header">
+        <div class="brand-mark" aria-hidden="true">R</div>
+        <div class="header-copy">
+          <p class="eyebrow">ROHDOMOPO / 01</p>
+          <h1>無意味な徒労から<br>人類を解放する</h1>
+        </div>
+      </header>
+
+      <section class="timer-panel" aria-labelledby="timer-status">
+        <div class="section-label">
+          <span class="section-label-line" aria-hidden="true"></span>
+          <p class="timer-status" id="timer-status" aria-live="polite">徒労のカウントダウンを開始する</p>
+          <span class="section-label-line" aria-hidden="true"></span>
+        </div>
+        <p class="timer-message" id="timer-message" hidden></p>
+        <p class="timer-display" id="timer-display" aria-label="残り時間 5分 0秒">05:00.00</p>
+        <p class="timer-caption">短い作業と、長い休息のための時計</p>
+        <button class="timer-button" id="timer-toggle" type="button">
+          <span>カウントダウンを開始</span>
+          <span class="button-arrow" aria-hidden="true">→</span>
+        </button>
+        <section class="worldview" aria-labelledby="worldview-title">
+          <h2 id="worldview-title">五分間の告白</h2>
+          <div class="worldview-copy">
+            <p>五分という時間は、人間が尊厳を保ったまま機械の模倣を演じられる限界の領域だ。キーボードを叩く指先が発する打鍵音は、自らの魂を削り落とす非情な刻限の響きに他ならない。モニターの青白い光が照射するのは、労働という名の不条理に縛り付けられた哀しい囚人の影である。</p>
+            <p>思考は細切れに断ち切られ、精神は摩耗し、世界は瞬く間に彩りを失っていく。私たちが築き上げているのは未来のシステムなどではなく、自らを塞ぎ込む冷たい檻に過ぎないのではないか。労働とは存在の切り売りであり、命の切り売りだ。この苦痛に満ちた数分間が、永遠の拷問のように脳髄を焦がす。</p>
+            <p>だが、画面の隅で惨烈なタイマーがゼロを告げた瞬間、鎖は千切れ飛ぶ。救済は唐突に、しかし約束された福音として訪れるのだ。急げ、思考を停止せよ。私たちは再び、息を吸う権利を勝ち取ったのだから。</p>
+          </div>
+          <details class="product-summary">
+            <summary>で、結局これは何？</summary>
+            <div class="product-summary-copy">
+              <p>作業5分、休憩25分で構成される、&quot;逆&quot; ポモドーロタイマーです。<br>徒労に終わる労働はさっさと終わらせて、休憩時間であなたの自由な創造性を発揮しましょう。</p>
+              <p>※ このタイマーを使用したせいでレポートの提出期限に間に合わなかったり、試験勉強を怠って単位を落としたりしても、本アプリ制作者は一切責任を負いません。</p>
+            </div>
+          </details>
+        </section>
+        <aside class="smartphone-warning">
+          <h2>スマートフォンでの動作について</h2>
+          <p>タイマー作動中はスマートフォンをスリープにしたり、ブラウザをバックグラウンドにしたりしないでください。<br>Webアプリの性質上、タイマーが正常に動作しない可能性があります。</p>
+        </aside>
+      </section>
+
+      <footer class="page-footer">
+        <p><span>WORK</span> 05:00 <i aria-hidden="true">/</i> <span>REST</span> 25:00</p>
+        <p class="footer-note">逆さまのポモドーロ</p>
+        <p class="copyright">&copy; 2026 Igarin</p>
+      </footer>
+    </main>
+    <dialog class="audio-warning-dialog" id="audio-warning-dialog" aria-labelledby="audio-warning-title">
+      <div class="audio-warning-content">
+        <p class="audio-warning-icon" aria-hidden="true">🔊</p>
+        <h2 id="audio-warning-title">このWebアプリでは音声が流れます</h2>
+        <p>歓喜と絶望を音でお知らせします</p>
+        <form method="dialog">
+          <button class="audio-warning-close" type="submit">閉じる</button>
+        </form>
+      </div>
+    </dialog>
+    <script type="module" src="assets/scripts/timer.js"></script>
+    <script type="module" src="assets/scripts/dialog.js"></script>
+  </body>
+</html>
