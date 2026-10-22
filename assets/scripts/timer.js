@@ -21,13 +21,6 @@ const PHASES = {
 };
 
 /**
- * タイマーを再描画する間隔（ミリ秒）。
- *
- * @type {number}
- */
-const RENDER_INTERVAL_MS = 50;
-
-/**
  * 明滅を開始する残り時間の上限（ミリ秒）。
  *
  * @type {number}
@@ -91,7 +84,7 @@ let elapsedBeforePauseMs = 0;
 let startedAtMs = null;
 
 /**
- * 次回のタイマー再描画に割り当てられた識別子。
+ * 次回のタイマー再描画に割り当てられたフレーム識別子。
  *
  * @type {?number}
  */
@@ -212,7 +205,7 @@ function renderTimer() {
     return;
   }
 
-  timerFrameId = window.setTimeout(renderTimer, RENDER_INTERVAL_MS);
+  timerFrameId = window.requestAnimationFrame(renderTimer);
 }
 
 /**
@@ -245,7 +238,7 @@ function pauseTimer() {
   timerButton.setAttribute("aria-pressed", "false");
 
   if (timerFrameId !== null) {
-    window.clearTimeout(timerFrameId);
+    window.cancelAnimationFrame(timerFrameId);
     timerFrameId = null;
   }
 
